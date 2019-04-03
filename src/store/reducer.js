@@ -3,6 +3,7 @@ import * as constants from './constants'
 import { game_util } from "../components/utility"
 
 const defaultState = fromJS({
+    wait: null,
     gameData:[...game_util.gameData],
     square: [],
     nextSquare:[],
@@ -13,17 +14,21 @@ const defaultState = fromJS({
     time : 0,
     score : 0,
     interval: 300,
-    gameover: false,
-
+    gameover: null,
 })
 
 export default(state = defaultState, action) => {
     switch(action.type){
+        case constants.WAIT:
+            return state.merge({
+                wait: true,
+            })
         case constants.START:
             return state.merge({
                 square : fromJS(action.square),
                 nextSquare : fromJS(action.nextSquare),
                 start: true,
+                wait: false,
             })
         case constants.CONTINUE:
             return state.set('start', !action.start)
@@ -60,6 +65,8 @@ export default(state = defaultState, action) => {
                 gameData: fromJS(action.gameData),
                 score : state.get('score') + game_util.getScore(action.cleanLine)
             })
+        case constants.ADD_LINE:
+            return state.set('gameData', fromJS(action.gameData))
         case constants.SET_TIME:
             return state.merge({
                 time: action.time + action.interval,

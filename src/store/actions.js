@@ -7,6 +7,10 @@ export const start = (square, nextSquare) => ({
     nextSquare: nextSquare,
 })
 
+export const wait_person = () => ({
+    type: constants.WAIT,
+})
+
 export const game_continue = (start) => ({
     type: constants.CONTINUE,
     start: start
@@ -27,10 +31,6 @@ export const move_down = (x) => ({
     pos_X : x,
 })
 
-export const fall_down = (gameData) => ({
-    type: constants.FALL_DOWN,
-    gameData: gameData,
-})
 
 export const square_rotate = (square) => ({
     type: constants.SQUARE_ROTATE,
@@ -53,6 +53,10 @@ export const clean_line = (gameData, cleanLine) => ({
     gameData: gameData,
 })
 
+export const add_line = (gameData) => ({
+    type: constants.ADD_LINE,
+    gameData: gameData,
+})
 export const set_Time = (time, interval) => ({
     type: constants.SET_TIME,
     time: time,
@@ -62,14 +66,6 @@ export const set_Time = (time, interval) => ({
 export const game_Over = () => ({
     type: constants.GAME_OVER,
 
-})
-
-
-
-
-export const guest_change = (data) => ({
-    type: constants.GUEST_CHANGE,
-    competitorData: data,
 })
 
 

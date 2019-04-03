@@ -1,47 +1,66 @@
-import React from 'react'
+import React, { Component } from 'react'
 import './Tetris.css'
 import Start from './components/start'
 import { connect } from 'react-redux'
 import { game_util } from './components/utility'
 import * as actions from './store/actions'
 import Competitor from './components/competitor/competitor'
+import {socket} from "./store"
 
-// class Tetris extends Component {
-//     constructor(props){
-//         super(props)
-//     }
-const Tetris = (props) => {
-    let { start, nextSquare, pos_X, pos_Y, square, gameData,
-        gameStart, time, score, gameover,
-    } = props
-    return (
-        <div className={"main"}>
-            <div className={'square'} id={'local'}>
-                <div className={'title'}>我的游戏区域
-                    <button
-                        className={'start'}
-                        onClick={() => gameStart(start)}
-                    >{start ? <Start/> : 'start'}</button>
-                </div>
-                <div className={'game'}>
-                    {game_util.handleInitDiv(game_util.setData(gameData, pos_X, pos_Y, square))}
-                    {gameover ? <div className={'gameover'}>Game OVER</div> : null}
-                </div>
-                <div className={'next'}>{game_util.handleInitDiv(
-                    game_util.generateSquare(...nextSquare))}</div>
-                <div className={'time'}>
-                    <div>time: {Math.floor(time / 1000)}s</div>
-                    <div>score: {score}</div>
-                </div>
+class Tetris extends Component {
+    constructor(props) {
+        super(props)
+    }
 
+    componentDidMount() {
+        socket.on('waiting', () => {
+            this.props.waitPerson()
+        })
+        socket.on('start', () => {
+            this.props.gameStart(this.props.start)
+        })
+    }
+
+    render() {
+        let {
+            start, nextSquare, pos_X, pos_Y, square, gameData, wait,
+            time, score, gameover, win,
+        } = this.props
+        return (
+            <div className={"main"}>
+                <div className={'square'} id={'local'}>
+                    <div className={'title'}>我的游戏区域
+                        {start && !win ? <Start/> : null }
+                        <div>{wait ? 'waiting for another person!' : ((wait == null) ? '未链接到服务器' : 'start')}</div>
+
+                        {/*<button*/}
+                            {/*className={'start'}*/}
+                            {/*onClick={() => gameStart(start)}*/}
+                        {/*>{start ? <Start/> : 'start'}</button>*/}
+                    </div>
+                    <div className={'game'}>
+                        {game_util.handleInitDiv(game_util.setData(gameData, pos_X, pos_Y, square))}
+                        {gameover ? <div className={'gameover'}>Game OVER</div> : null}
+                        {win ? <div className={'win'}>You Win</div> : null}
+                    </div>
+                    <div className={'next'}>{game_util.handleInitDiv(
+                        game_util.generateSquare(...nextSquare))}</div>
+                    <div className={'time'}>
+                        <div>time: {Math.floor(time / 1000)}s</div>
+                        <div>score: {score}</div>
+                    </div>
+
+                </div>
+                <Competitor/>
             </div>
-            <Competitor/>
-        </div>
-    )
+        )
+    }
 }
+
 
 const mapStateToProps = (state) => {
     return {
+        wait: state.my.get('wait'),
         start: state.my.get('start'),
         square: state.my.get('square').toJS(),
         nextSquare: state.my.get('nextSquare').toJS(),
@@ -51,6 +70,7 @@ const mapStateToProps = (state) => {
         time: state.my.get('time'),
         score: state.my.get('score'),
         gameover: state.my.get('gameover'),
+        win: state.competitor.get('gameover'),
     }
 }
 
@@ -67,6 +87,9 @@ const mapDispatchToProps = (dispatch) => {
                 dispatch(actions.game_continue(start))
             }
         },
+        waitPerson() {
+            dispatch(actions.wait_person())
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Tetris)

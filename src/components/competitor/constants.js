@@ -8,6 +8,7 @@ export const FALL_DOWN = 'CPT_FALL_DOWN'
 export const FIX_SQUARE = 'CPT_FIX_SQUARE'
 export const NEXT = 'CPT_NEXT'
 export const CLEAN_LINE = 'CPT_CLEAN_LINE'
+export const ADD_LINE = 'CPT_ADD_LINE'
 export const SET_TIME = 'CPT_SET_TIME'
 export const GAME_OVER = 'CPT_GAME_OVER'
 

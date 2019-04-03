@@ -3,7 +3,7 @@ import myReducer from './reducer'
 import competitorReducer from '../components/competitor/reducer'
 
 // 方案一，放置在中间件里，看看效果如何
-export const socket = require('socket.io-client')('http://localhost:8000')
+export const socket = require('socket.io-client')('192.168.1.104:8000')
 
 //先来个简单的logger中间件试试感觉
 function logger(socket) {

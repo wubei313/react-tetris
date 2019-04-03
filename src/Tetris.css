@@ -76,6 +76,13 @@
     color: red;
     text-align: center;
     position: relative;
-
 }
-
+.win {
+    width:200px;
+    height:40px;
+    top: 40%;
+    font-size: 200%;
+    color: gold;
+    text-align: center;
+    position: relative;
+}

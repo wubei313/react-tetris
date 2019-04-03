@@ -59,6 +59,8 @@ export default(state = defaultState, action) => {
             return state.merge({
                 time: action.time + action.interval,
             })
+        case CTT.ADD_LINE:
+            return state.set('gameData', fromJS(action.gameData))
         case CTT.GAME_OVER:
             return state.merge({
                 gameover : true,

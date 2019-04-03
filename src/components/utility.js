@@ -26,6 +26,28 @@ class game {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ]
+        // this.gameData = [
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        //     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        //     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+        //     [1, 1, 1, 1, 0, 1, 1, 1, 1, 1]
+        // ]
         this.squares = [
             [
                 [0, 2, 0, 0],
@@ -91,6 +113,11 @@ class game {
         let x = Math.floor(Math.random() * 7)
         let y = Math.floor(Math.random() * 4)
         return [x, y]
+    }
+    randomLine() {
+        let line = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let l = line.map(() => Math.floor(Math.random() *2))
+        return l
     }
     setData = (data, X, Y, square) => {
         square = this.generateSquare(...square)
@@ -214,6 +241,15 @@ class game {
             data.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
         }
         return {data, cleanLine}
+    }
+
+    addLine(gameData, lines) {
+        let line = lines - 1
+        for (let i = 0; i < line; i++) {
+            gameData.push(this.randomLine())
+        }
+        gameData.splice(0, line)
+        return gameData
     }
 
     getScore (lines) {
